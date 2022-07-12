@@ -1,5 +1,3 @@
-import jwt from 'jsonwebtoken';
-
 let userDB = [
     {
         id: '1',
@@ -28,14 +26,7 @@ export async function findById(id) {
 }
 
 export async function createUser(userId) {
-    const created = {...userId, id: userId.id = (userDB.length + 1).toString()};
+    const created = {...userId, id: (userDB.length + 1).toString()};
     userDB.push(created);
     return created.id;
-}
-
-export async function verify(token) {
-    const data = jwt.decode(token);
-    if (data) {
-        return {token, username: data.username};
-    }
 }
