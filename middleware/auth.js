@@ -8,7 +8,8 @@ export const isAuth = async (req, res, next) => {
     if (!(authHeader && authHeader.startsWith('Bearer '))) {
         return res.status(401).json(AUTH_ERROR);
     }
-
+    // const webUserId = req.params.id;
+    // console.log(webUserId);
     const token = authHeader.split(' ')[1];
     jwt.verify(
         token,
@@ -21,6 +22,10 @@ export const isAuth = async (req, res, next) => {
             if (!user) {
                 return res.status(401).json(AUTH_ERROR);
             }
+            // if (webUserId) {
+            //     const webUser = await userRepository.findById(webUserId);
+            //     if (user.id !== webUser.id) return res.status(401).json(AUTH_ERROR);
+            // }
             req.userId = user.id // req.customdata
             next();
         }
