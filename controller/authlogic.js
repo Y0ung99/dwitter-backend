@@ -10,14 +10,14 @@ export async function signUp(req, res) {
         return res.status(409).json({message: `${username} already exists`});
     }
     const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
-    const userId = await userRepository.createUser({
+    const user = await userRepository.createUser({
         username,
         password: hashed,
         name,
         email,
         url
     })
-    const token = createJwtToken(userId);
+    const token = createJwtToken(user);
     res.status(201).json({token, username});
 }
 
