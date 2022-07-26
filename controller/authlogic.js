@@ -45,6 +45,5 @@ export async function me(req, res) {
 }
 
 function createJwtToken(id) {
-    console.log(config.jwt.secretKey, config.jwt.expiresInSec, config.bcrypt.saltRounds);
     return jwt.sign({id}, config.jwt.secretKey, {expiresIn: config.jwt.expiresInSec});
 }
