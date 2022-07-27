@@ -16,4 +16,4 @@ dbmysql:
       mysql:
         default_schema: main
         privileges:
-          mysql: admin
+          main: admin
