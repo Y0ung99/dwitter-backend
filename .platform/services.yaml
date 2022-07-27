@@ -11,9 +11,9 @@ dbmysql:
 
   configuration:
     schemas:
-      - mysql
+      - main
     endpoints:
       mysql:
-        default_schema: mysql
+        default_schema: main
         privileges:
-          mysql: admin
+          main: admin
