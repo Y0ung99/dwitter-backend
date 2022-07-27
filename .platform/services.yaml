@@ -10,9 +10,9 @@ dbmysql:
   disk: 512
   configuration:
     schemas:
-      - mysql
+      - dbmysql
     endpoints:
-      mysql:
-        default_schema: mysql
+      dbmysql:
+        default_schema: dbmysql
         privileges:
-          mysql: admin
+          dbmysql: admin
