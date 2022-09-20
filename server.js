@@ -6,8 +6,10 @@ import 'express-async-errors';
 import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
 import { config } from './config.js';
-import {initSocket} from './connection/socket.js';
+import {initSocket, getSocketIO} from './connection/socket.js';
 import { sequelize } from './db/database.js';
+import { TweetController } from './controller/logic.js';
+import * as tweetRepository from './data/data.js';
 
 const app = express();
 
@@ -16,7 +18,10 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan('tiny'));
 
-app.use('/tweets', tweetsRouter);
+app.use(
+    '/tweets', 
+    tweetsRouter(new TweetController(tweetRepository, getSocketIO))
+);
 app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
