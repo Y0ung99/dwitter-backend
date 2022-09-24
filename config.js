@@ -9,6 +9,9 @@ function required(key, defaultValue = undefined) {
     return value;
 }
 export const config = {
+    cors: {
+        allowedOrigin: required('CORS_ALLOW_ORIGIN'),
+    },
     jwt: {
         secretKey: required('JWT_SECRET'),
         expiresInSec: parseInt((required('JWT_EXPIRES_SEC', 86400))),
