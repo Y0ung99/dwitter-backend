@@ -15,32 +15,52 @@ import { AuthController } from './controller/auth.js';
 import * as tweetRepository from './data/tweet.js';
 import * as userRepository from './data/auth.js'
 
-const app = express();
+const corsOption = {
+    origin: config.cors.allowedOrigin,
+    optionsSuccessStatus: 200,
+};
 
-app.use(express.json());
-app.use(helmet());
-app.use(cors());
-app.use(morgan('tiny'));
+export async function startServer() {
+    const app = express();
+    app.use(express.json());
+    app.use(helmet());
+    app.use(cors(corsOption));
+    app.use(morgan('tiny'));
+    
+    app.use(
+        '/tweets', 
+        tweetsRouter(new TweetController(tweetRepository, getSocketIO))
+    );
+    app.use(
+        '/auth', 
+        authRouter(new AuthController(userRepository, jwt, bcrypt, config))
+    );
+    
+    app.use((req, res, next) => {
+        res.sendStatus(404);
+    });
+    
+    app.use((error, req, res, next) => {
+        console.error(error);
+        res.sendStatus(500);
+    });
 
-app.use(
-    '/tweets', 
-    tweetsRouter(new TweetController(tweetRepository, getSocketIO))
-);
-app.use(
-    '/auth', 
-    authRouter(new AuthController(userRepository, jwt, bcrypt, config))
-);
-
-app.use((req, res, next) => {
-    res.sendStatus(404);
-})
-
-app.use((error, req, res, next) => {
-    console.error(error);
-    res.sendStatus(500);
-})
-
-sequelize.sync().then(() => {
+    await sequelize.sync(); // 오류나면 오류던짐
     const server = app.listen(config.host.port);
+    console.log('start server now..');
     initSocket(server);
-})
+    return server;
+}
+
+export async function stopServer(server) {
+    return new Promise((resolve, reject) => {
+        server.close(async() => {
+            try {
+                await sequelize.close();
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        });
+    });
+}
