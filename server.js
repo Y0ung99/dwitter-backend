@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import 'express-async-errors';
 import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
@@ -9,7 +11,9 @@ import { config } from './config.js';
 import {initSocket, getSocketIO} from './connection/socket.js';
 import { sequelize } from './db/database.js';
 import { TweetController } from './controller/tweet.js';
+import { AuthController } from './controller/auth.js';
 import * as tweetRepository from './data/tweet.js';
+import * as userRepository from './data/auth.js'
 
 const app = express();
 
@@ -22,7 +26,10 @@ app.use(
     '/tweets', 
     tweetsRouter(new TweetController(tweetRepository, getSocketIO))
 );
-app.use('/auth', authRouter);
+app.use(
+    '/auth', 
+    authRouter(new AuthController(userRepository, jwt, bcrypt, config))
+);
 
 app.use((req, res, next) => {
     res.sendStatus(404);
