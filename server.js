@@ -8,8 +8,8 @@ import authRouter from './router/auth.js';
 import { config } from './config.js';
 import {initSocket, getSocketIO} from './connection/socket.js';
 import { sequelize } from './db/database.js';
-import { TweetController } from './controller/logic.js';
-import * as tweetRepository from './data/data.js';
+import { TweetController } from './controller/tweet.js';
+import * as tweetRepository from './data/tweet.js';
 
 const app = express();
 
