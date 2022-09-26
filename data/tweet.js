@@ -69,9 +69,6 @@ export async function getById(id) {
 export async function create(text, userId) {
     return Tweet.create({text, userId, createdAt: new Date()})
     .then(data => getById(data.dataValues.id));
-    return db.execute('INSERT INTO tweets (text, createdAt, userId) VALUES (?,?,?)',
-    [text, new Date(), userId])
-    .then(result => getById(result[0].insertId));
 }
 
 export async function update(text, id) {
