@@ -7,4 +7,10 @@ export const sequelize = new SQ.Sequelize(database, user, password, {
     port,
     dialect: 'postgres',
     logging: false,
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false,
+        },
+    },
 })
