@@ -47,7 +47,7 @@ export async function startServer(port) {
 
     await sequelize.sync(); // 오류나면 오류던짐
     const server = app.listen(port);
-    console.log('start server now..');
+    console.log(`server is started ${new Date()}`);
     initSocket(server);
     return server;
 }
