@@ -6,8 +6,8 @@ class Socket {
     constructor(server) {
         this.io = new Server(server, {
             cors: {
-                origin: '*'
-            }
+                origin: config.cors.allowedOrigin,
+            },
         });
 
         this.io.use((socket, next) => {
