@@ -7,6 +7,7 @@ const AUTH_ERROR = { message: 'Authentication Error'};
 export const isAuth = async (req, res, next) => {
     const authHeader = req.get('Authorization');
     if (!(authHeader && authHeader.startsWith('Bearer '))) {
+        console.log('1', authHeader);
         return res.status(401).json(AUTH_ERROR);
     }
 
@@ -16,10 +17,12 @@ export const isAuth = async (req, res, next) => {
         config.jwt.secretKey,
         async (error, decoded) => {
             if (error) {
+                console.log('2', authHeader);
                 return res.status(401).json(AUTH_ERROR);
             }
             const user = await userRepository.findById(decoded.id);
             if (!user) {
+                console.log('3', authHeader);
                 return res.status(401).json(AUTH_ERROR);
             }
             req.userId = user.id; // req.customdata

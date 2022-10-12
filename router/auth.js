@@ -1,12 +1,10 @@
-import express, { Router } from 'express';
+import express from 'express';
 import 'express-async-errors';
-import * as authController from '../controller/auth.js';
 import { body } from 'express-validator';
 import { validate } from '../middleware/validator.js';
 import { isAuth } from '../middleware/auth.js';
 
 const router = express.Router();
-
 
 const validateCredential = [
     body('username')
