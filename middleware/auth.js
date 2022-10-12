@@ -17,7 +17,7 @@ export const isAuth = async (req, res, next) => {
         config.jwt.secretKey,
         async (error, decoded) => {
             if (error) {
-                console.log('2', authHeader);
+                console.log('2', error);
                 return res.status(401).json(AUTH_ERROR);
             }
             const user = await userRepository.findById(decoded.id);
